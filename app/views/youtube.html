@@ -1,0 +1,10 @@
+<form>
+  <input ng-model="query">
+  <button type="submit" ng-click="youtube.search(query)">Buscar</button>
+</form>
+
+<!-- Lista de resultados -->
+<div ng-repeat="video in youtube.videos">
+  <h4>{{video.snippet.title}}</h4>
+  <img ng-src="{{video.snippet.thumbnails.default.url}}">
+</div>
