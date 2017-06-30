@@ -8,10 +8,10 @@
  * Controller of the rocolaApp
  */
 angular.module('rocolaApp')
-  .controller('YoutubeCtrl', ['youtubeService', function (youtubeService) {
+  .controller('YoutubeCtrl', ['youtubeService', 'localStorageService', function (youtubeService, localStorageService) {
     var vm = this;
 
-    vm.playlist = [];
+    vm.playlist = localStorageService.get('playlist');
 
     vm.search = function (query) {
       var request = youtubeService.search(query);
@@ -24,6 +24,7 @@ angular.module('rocolaApp')
 
     vm.queueVideo =  function (video) {
       vm.playlist.push(video);
+      localStorageService.set('playlist', vm.playlist);
     };
 
   }]);

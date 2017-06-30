@@ -9,7 +9,10 @@
  * Main module of the application.
  */
 angular
-  .module('rocolaApp', []);
+  .module('rocolaApp', ['LocalStorageModule'])
+  .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix('rocola');
+  }]);
 
 function onClientLoad() {
     gapi.client.load('youtube', 'v3', onYouTubeApiLoad);
