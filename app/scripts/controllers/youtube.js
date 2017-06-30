@@ -11,6 +11,8 @@ angular.module('rocolaApp')
   .controller('YoutubeCtrl', ['youtubeService', function (youtubeService) {
     var vm = this;
 
+    vm.playlist = [];
+
     vm.search = function (query) {
       var request = youtubeService.search(query);
       request.execute(vm.onSearchResponse);
@@ -18,6 +20,10 @@ angular.module('rocolaApp')
 
     vm.onSearchResponse = function (response) {
         vm.videos = response.items;
+    };
+
+    vm.queueVideo =  function (video) {
+      vm.playlist.push(video);
     };
 
   }]);
