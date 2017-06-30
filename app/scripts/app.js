@@ -21,3 +21,7 @@ function onClientLoad() {
 function onYouTubeApiLoad() {
     gapi.client.setApiKey('AIzaSyD8839x5fpTHddEocyJZKsbUihKT_S5QeA');
 }
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});

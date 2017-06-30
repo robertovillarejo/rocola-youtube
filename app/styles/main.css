@@ -81,3 +81,45 @@ body {
     border-bottom: 0;
   }
 }
+
+/* Personalizados para la Rocola */
+/*
+#submit {
+  position: absolute;
+  right: 265px;
+  top: 105px;
+}
+
+.search-bar {
+  background-color: darkred;
+}
+*/
+
+.video-title {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.list-video {
+  padding: 10px;
+}
+
+.list-video:hover {
+  background-color: lightgray;
+}
+
+.video-channel {
+  color: red;
+}
+
+.list-scroll {
+  width: 300px;
+  height: 660px;
+  overflow: scroll;
+}
+
+.video-btn {
+  position: relative;
+  bottom: 80px;
+  opacity: 0.5;
+}
