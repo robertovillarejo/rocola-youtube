@@ -8,9 +8,20 @@
  * Service in the rocolaApp.
  */
 angular.module('rocolaApp')
-  .service('youtubeService', ['$http', function ($http) {
+  .service('youtubeService', ['$http', 'localStorageService', function ($http, localStorageService) {
     var service = this;
     service.results = {};
+
+    service.playlist = [];
+
+    init();
+
+    function init() {
+      var data = localStorageService.get('playlist');
+      if (data != undefined || data != null) {
+        service.playlist = data;
+      }
+    }
 
     service.search = function (query) {
       $http.get('https://www.googleapis.com/youtube/v3/search', {
@@ -33,5 +44,13 @@ angular.module('rocolaApp')
         service.results = {};
       });
     };
+
+    service.savePlaylist = function (playlist) {
+      localStorageService.set('playlist', playlist);
+    };
+
+    service.getPlaylist = function () {
+      return service.playlist;
+    }
 
   }]);

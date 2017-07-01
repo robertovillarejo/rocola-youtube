@@ -8,19 +8,11 @@
  * Controller of the rocolaApp
  */
 angular.module('rocolaApp')
-  .controller('YoutubeCtrl', ['youtubeService', 'localStorageService', function (youtubeService, localStorageService) {
+  .controller('YoutubeCtrl', ['youtubeService', '$window', function (youtubeService, $window) {
     var vm = this;
 
-    vm.playlist = [];
-
-    init();
-
-    function init() {
-      var data = localStorageService.get('playlist');
-      if (data != undefined || data != null) {
-        vm.playlist = data;
-      }
-    }
+    // Inicializa playlist con los datos guardados en disco
+    vm.playlist = youtubeService.getPlaylist();
 
     vm.search = function (query) {
       youtubeService.search(query);
@@ -28,8 +20,61 @@ angular.module('rocolaApp')
     };
 
     vm.queueVideo =  function (video) {
+      if (vm.playlist.length == 0 && vm.player.getPlayerState() != 1) {
+        vm.player.cueVideoById(video.id.videoId);
+        return;
+      }
       vm.playlist.push(video);
-      localStorageService.set('playlist', vm.playlist);
+      youtubeService.savePlaylist(vm.playlist);
+    };
+
+    $window.onYouTubeIframeAPIReady = function () {
+      vm.player = new YT.Player('player', {
+          height: '360',
+          width: '640',
+          videoId: '',
+          playerVars: {
+            controls: 0,
+            playsinline: 0,
+            disablekb: 1,
+            showinfo: 0,
+            iv_load_policy: 3,
+            rel: 0,
+            fs: 0
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+    }
+
+    function onPlayerReady(event) {
+      if (vm.playlist.length > 0) {
+        vm.playNextVideo();
+      } else {
+        // Hacer invisible al reproductor
+      }
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.ENDED) {
+        if (vm.playlist.length > 0) {
+          vm.playNextVideo();
+        } else {
+          // Hacer invisible al reproductor
+        }
+      }
+      if (vm.player.getPlayerState() == 5 && vm.playlist.length == 0) {
+        vm.player.playVideo();
+      }
+    }
+
+    vm.playNextVideo = function () {
+      var nextVideo = vm.playlist.shift();
+      vm.player.cueVideoById(nextVideo.id.videoId);
+      vm.player.playVideo();
+      youtubeService.savePlaylist(vm.playlist);
     };
 
   }]);
