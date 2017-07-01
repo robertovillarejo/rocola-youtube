@@ -11,15 +11,20 @@ angular.module('rocolaApp')
   .controller('YoutubeCtrl', ['youtubeService', 'localStorageService', function (youtubeService, localStorageService) {
     var vm = this;
 
-    vm.playlist = localStorageService.get('playlist');
+    vm.playlist = [];
+
+    init();
+
+    function init() {
+      var data = localStorageService.get('playlist');
+      if (data != undefined || data != null) {
+        vm.playlist = data;
+      }
+    }
 
     vm.search = function (query) {
-      var request = youtubeService.search(query);
-      request.execute(vm.onSearchResponse);
-    };
-
-    vm.onSearchResponse = function (response) {
-        vm.videos = response.items;
+      youtubeService.search(query);
+      vm.videos = youtubeService.results;
     };
 
     vm.queueVideo =  function (video) {

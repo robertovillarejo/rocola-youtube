@@ -28,7 +28,7 @@
 
   <!-- Lista de reproducción -->
   <div class="col-md-6 list-scroll">
-    <div class="row list-video" ng-repeat="video in youtube.playlist">
+    <div class="row list-video" ng-repeat="video in youtube.playlist track by $index">
       <h4 class="video-title">{{video.snippet.title}}</h4>
     </div>
   </div>
