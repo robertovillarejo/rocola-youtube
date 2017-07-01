@@ -3,6 +3,16 @@
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.16.0.
 
+## Prerrequisitos
+NodeJS (npm)
+
+Bower en alcance global
+`npm install -g bower`
+
+## Instalación de dependencias
+Ejecuta `npm install`
+Y luego `bower install`
+
 ## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.
