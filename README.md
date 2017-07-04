@@ -6,11 +6,11 @@ version 0.16.0.
 ## Prerrequisitos
 NodeJS (npm)
 
-Bower en alcance global
+Bower en alcance global  
 `npm install -g bower`
 
 ## Instalación de dependencias
-Ejecuta `npm install`
+Ejecuta `npm install`  
 Y luego `bower install`
 
 ## Build & development
