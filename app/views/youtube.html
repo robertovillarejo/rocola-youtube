@@ -1,39 +1,32 @@
-<div class="row">
-  <div class="col-md-6">
-    <form data-ng-submit="youtube.search(query)">
-      <input type="text" class="form-control search-bar" placeholder="Buscar videos" data-ng-model="query">
-      <input id="submit" type="image" src="images/search.png" alt="Buscar">
-    </form>
+<header>
+  <h1>Rocola<strong>YouTube</strong></h1>
+  <form id="search" data-ng-submit="youtube.search(query)">
+    <input id="query" name="q" type="text" placeholder="Search for a YouTube video" data-ng-model="query">
+    <input id="submit" type="image" src="images/search.png" alt="Search">
+  </form>
+  <nav>
+    <a id="play" >{{ youtube.playerState }}</a>
+  </nav>
+</header>
+
+<div id="player"></div>
+
+<!-- Results list -->
+<div id="results">
+  <div class="video" data-ng-repeat="video in youtube.videos" data-ng-click="youtube.queueVideo(video)">
+    <img class="video-image" data-ng-src="{{ video.snippet.thumbnails.default.url }}">
+    <p class="video-title">{{ video.snippet.title }}</p>
+    <p class="video-author">{{ video.snippet.channelTitle }}</p>
+    <p class="video-description">{{ video.snippet.description }}</p>
   </div>
 </div>
 
-<div class="" id="player">
-
-</div>
-
-<div class="row">
-  <!-- Lista de resultados -->
-  <div class="col-md-6 list-scroll">
-    <div class="row list-video" ng-repeat="video in youtube.videos">
-      <div class="col-md-6">
-        <a href="#" data-toggle="tooltip" title="{{video.snippet.description}}">
-          <img class="img-rounded" ng-src="{{video.snippet.thumbnails.default.url}}" alt="{{video.snippet.title}}">
-        </a>
-      </div>
-      <div class="col-md-6">
-        <h4 class="video-title">{{video.snippet.title}}</h4>
-        <p class="video-channel">{{video.snippet.channelTitle}}</p>
-        <p>{{video.snippet.contentDetails.duration}}</p>
-      </div>
-      <button class="video-btn" ng-click="youtube.queueVideo(video)">+</button>
-    </div>
-  </div>
-
-
-  <!-- Lista de reproducción -->
-  <div class="col-md-6 list-scroll">
-    <div class="row list-video" ng-repeat="video in youtube.playlist track by $index">
-      <h4 class="video-title">{{video.snippet.title}}</h4>
-    </div>
-  </div>
+<!-- Playlist -->
+<div id="playlist">
+  <p id="current">{{ youtube.player.j.videoData.title }}</p>
+  <ol id="upcoming" data-ng-show="youtube.playlist">
+    <li data-ng-repeat="video in youtube.playlist">
+      <p class="item-title">{{video.snippet.title}}</p>
+    </li>
+  </ol>
 </div>

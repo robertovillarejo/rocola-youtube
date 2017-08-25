@@ -14,14 +14,14 @@ angular.module('rocolaApp')
 
     service.playlist = [];
 
-    init();
-
     function init() {
       var data = localStorageService.get('playlist');
-      if (data != undefined || data != null) {
+      if (data !== undefined || data !== null) {
         service.playlist = data;
       }
     }
+
+    init();
 
     service.search = function (query) {
       $http.get('https://www.googleapis.com/youtube/v3/search', {
@@ -40,6 +40,7 @@ angular.module('rocolaApp')
       })
       .then(function (response) {
         service.results = response.data.items;
+        console.log(response);
       }, function () {
         service.results = {};
       });
@@ -51,6 +52,6 @@ angular.module('rocolaApp')
 
     service.getPlaylist = function () {
       return service.playlist;
-    }
+    };
 
   }]);

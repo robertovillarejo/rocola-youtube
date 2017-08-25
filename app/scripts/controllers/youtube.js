@@ -13,6 +13,8 @@ angular.module('rocolaApp')
 
     // Inicializa playlist con los datos guardados en disco
     vm.playlist = youtubeService.getPlaylist();
+    vm.playerState = "";
+    vm.results = [];
 
     vm.search = function (query) {
       youtubeService.search(query);
@@ -20,7 +22,7 @@ angular.module('rocolaApp')
     };
 
     vm.queueVideo =  function (video) {
-      if (vm.playlist.length == 0 && vm.player.getPlayerState() != 1) {
+      if (vm.playlist.length === 0 && vm.player.getPlayerState() !== 1) {
         vm.player.cueVideoById(video.id.videoId);
         return;
       }
@@ -47,7 +49,7 @@ angular.module('rocolaApp')
             'onStateChange': onPlayerStateChange
           }
         });
-    }
+    };
 
     function onPlayerReady(event) {
       if (vm.playlist.length > 0) {
@@ -58,14 +60,15 @@ angular.module('rocolaApp')
     }
 
     function onPlayerStateChange(event) {
-      if (event.data == YT.PlayerState.ENDED) {
+      vm.PlayerState = event.data;
+      if (event.data === YT.PlayerState.ENDED) {
         if (vm.playlist.length > 0) {
           vm.playNextVideo();
         } else {
           // Hacer invisible al reproductor
         }
       }
-      if (vm.player.getPlayerState() == 5 && vm.playlist.length == 0) {
+      if (vm.player.getPlayerState() === 5 && vm.playlist.length === 0) {
         vm.player.playVideo();
       }
     }

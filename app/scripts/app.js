@@ -19,8 +19,3 @@ angular
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   });
-
-
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
