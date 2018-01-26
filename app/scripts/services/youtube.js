@@ -10,13 +10,12 @@
 angular.module('rocolaApp')
   .service('youtubeService', ['$http', 'localStorageService', function ($http, localStorageService) {
     var service = this;
-    service.results = {};
 
     service.playlist = [];
 
     function init() {
       var data = localStorageService.get('playlist');
-      if (data !== undefined || data !== null) {
+      if (!data) {
         service.playlist = data;
       }
     }
@@ -24,7 +23,7 @@ angular.module('rocolaApp')
     init();
 
     service.search = function (query) {
-      $http.get('https://www.googleapis.com/youtube/v3/search', {
+      return $http.get('https://www.googleapis.com/youtube/v3/search', {
         params: {
           key: 'AIzaSyD8839x5fpTHddEocyJZKsbUihKT_S5QeA',
           part: 'snippet',
@@ -37,21 +36,11 @@ angular.module('rocolaApp')
           safeSearch: 'moderate',
           topicId: '10'
         }
-      })
-      .then(function (response) {
-        service.results = response.data.items;
-        console.log(response);
-      }, function () {
-        service.results = {};
       });
     };
 
     service.savePlaylist = function (playlist) {
       localStorageService.set('playlist', playlist);
-    };
-
-    service.getPlaylist = function () {
-      return service.playlist;
     };
 
   }]);

@@ -12,13 +12,15 @@ angular.module('rocolaApp')
     var vm = this;
 
     // Inicializa playlist con los datos guardados en disco
-    vm.playlist = youtubeService.getPlaylist();
+    vm.playlist = youtubeService.playlist;
     vm.playerState = "";
-    vm.results = [];
 
     vm.search = function (query) {
-      youtubeService.search(query);
-      vm.videos = youtubeService.results;
+      youtubeService.search(query).then(function (response) {
+        vm.videos = response.data.items;
+      }, function () {
+        vm.videos = {};
+      });
     };
 
     vm.queueVideo =  function (video) {
