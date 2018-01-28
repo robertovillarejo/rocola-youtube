@@ -10,13 +10,13 @@
 angular.module('rocolaApp')
   .service('youtubeService', ['$http', 'localStorageService', function ($http, localStorageService) {
     var service = this;
-
-    service.playlist = [];
-
+    
     function init() {
       var data = localStorageService.get('playlist');
-      if (!data) {
+      if (data) {
         service.playlist = data;
+      } else {
+        service.playlist = [];
       }
     }
 

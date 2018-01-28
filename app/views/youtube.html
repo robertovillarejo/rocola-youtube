@@ -25,7 +25,7 @@
 <div id="playlist">
   <p id="current">{{ youtube.player.j.videoData.title }}</p>
   <ol id="upcoming" data-ng-show="youtube.playlist">
-    <li data-ng-repeat="video in youtube.playlist">
+    <li ng-repeat="video in youtube.playlist">
       <p class="item-title">{{video.snippet.title}}</p>
     </li>
   </ol>
