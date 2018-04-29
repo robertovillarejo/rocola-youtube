@@ -6,3 +6,6 @@ export * from './video-delete-dialog.component';
 export * from './video-detail.component';
 export * from './video.component';
 export * from './video.route';
+export * from './rocola.component';
+export * from './rocola.router';
+export * from './rocola.service';

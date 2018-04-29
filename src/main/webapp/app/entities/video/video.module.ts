@@ -13,11 +13,15 @@ import {
     VideoDeleteDialogComponent,
     videoRoute,
     videoPopupRoute,
+    rocolaRoute,
+    RocolaComponent,
+    RocolaService
 } from './';
 
 const ENTITY_STATES = [
     ...videoRoute,
     ...videoPopupRoute,
+    rocolaRoute
 ];
 
 @NgModule({
@@ -32,6 +36,7 @@ const ENTITY_STATES = [
         VideoDeleteDialogComponent,
         VideoPopupComponent,
         VideoDeletePopupComponent,
+        RocolaComponent
     ],
     entryComponents: [
         VideoComponent,
@@ -39,10 +44,12 @@ const ENTITY_STATES = [
         VideoPopupComponent,
         VideoDeleteDialogComponent,
         VideoDeletePopupComponent,
+        RocolaComponent
     ],
     providers: [
         VideoService,
         VideoPopupService,
+        RocolaService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

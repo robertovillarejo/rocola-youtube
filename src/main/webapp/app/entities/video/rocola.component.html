@@ -1,0 +1,22 @@
+<h1>Rocola
+    <strong>YouTube</strong>
+</h1>
+<!-- Playlist -->
+<div id="playlist">
+    <ol id="upcoming">
+        <li *ngFor="let video of videos">
+            <p class="item-title">{{video.id}}</p>
+            <p class="item-title">{{video.title}}</p>
+            <p class="item-title">{{video.description}}</p>
+        </li>
+    </ol>
+</div>
+
+<form name="saveForm" (ngSubmit)="save()">
+    <div class="modal-footer">
+        <button type="submit" class="btn">
+            <span class="fa"></span>&nbsp;
+            <span>Guardar</span>
+        </button>
+    </div>
+</form>
