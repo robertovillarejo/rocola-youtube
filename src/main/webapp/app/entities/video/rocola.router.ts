@@ -8,6 +8,5 @@ export const rocolaRoute: Route = {
     path: 'rocola-youtube',
     component: RocolaComponent,
     data: {
-        pageTitle: 'tracker.title'
     }
 };

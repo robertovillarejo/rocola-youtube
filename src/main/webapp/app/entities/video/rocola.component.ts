@@ -12,11 +12,9 @@ export class RocolaComponent implements OnInit, OnDestroy {
 
     private isSaving = false;
 
-    videos: any[] = [{
-        id: '1234',
-        title: 'TITULO',
-        description: 'description'
-    }];
+    videos: any[] = [];
+
+    video = new Video();
 
     constructor(
         private rocolaService: RocolaService
@@ -27,17 +25,14 @@ export class RocolaComponent implements OnInit, OnDestroy {
     save() {
         console.log('SAVE COMPONENT');
         this.isSaving = true;
-        this.rocolaService.sendVideo();
-    }
-
-    showVideos(video: any) {
-
+        this.rocolaService.sendVideo(this.video);
     }
 
     ngOnInit() {
         this.rocolaService.subscribe();
-        this.rocolaService.receive().subscribe((video) => {
-            this.showVideos(video);
+        this.rocolaService.receive().subscribe((videos) => {
+            console.log(videos);
+            this.videos = videos;
         });
     }
 

@@ -5,6 +5,7 @@ import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
 import { AuthServerProvider, CSRFService } from '../../shared';
 import { WindowRef } from '../../shared/tracker/window.service';
+import { Video } from '.';
 
 @Injectable()
 export class RocolaService {
@@ -45,13 +46,7 @@ export class RocolaService {
         this.stompClient.connect(headers, () => {
             this.connectedPromise('success');
             this.connectedPromise = null;
-            this.sendVideo();
             if (!this.alreadyConnectedOnce) {
-                this.subscription = this.router.events.subscribe((event) => {
-                    if (event instanceof NavigationEnd) {
-                        this.sendVideo();
-                    }
-                });
                 this.alreadyConnectedOnce = true;
             }
         });
@@ -73,13 +68,11 @@ export class RocolaService {
         return this.listener;
     }
 
-    sendVideo() {
-        console.log('SEND VIDEO: SERVICE');
+    sendVideo(video: Video) {
         if (this.stompClient !== null && this.stompClient.connected) {
-            console.log('STOMP CLIENT NOT NULL');
             this.stompClient.send(
                 '/topic/video', // destination
-                JSON.stringify({ 'id': '12345', 'title': 'TITLE', 'description': 'DESCRIPTION' }), // body
+                JSON.stringify(video), // body
                 {} // header
             );
         }
