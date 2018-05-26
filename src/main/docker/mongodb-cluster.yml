@@ -1,7 +1,7 @@
 version: '2'
 services:
     rocolayoutube-mongodb:
-        image: mongo:3.2.10
+        image: mongo:3.4.10
         ports:
             - "27017:27017"
         command: mongos --configdb rocolayoutube-mongodb-config
@@ -11,6 +11,6 @@ services:
             dockerfile: mongodb/MongoDB.Dockerfile
         command: mongod --replSet rs1 --noprealloc --smallfiles
     rocolayoutube-mongodb-config:
-        image: mongo:3.2.10
+        image: mongo:3.4.10
         container_name: rocolayoutube-mongodb-config
         command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db

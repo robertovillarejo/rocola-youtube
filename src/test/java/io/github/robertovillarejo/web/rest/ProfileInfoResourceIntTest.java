@@ -1,7 +1,7 @@
 package io.github.robertovillarejo.web.rest;
 
 import io.github.jhipster.config.JHipsterProperties;
-import io.github.robertovillarejo.RocolaYoutubeApp;
+import io.github.robertovillarejo.RocolayoutubeApp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ProfileInfoResource
  **/
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RocolaYoutubeApp.class)
+@SpringBootTest(classes = RocolayoutubeApp.class)
 public class ProfileInfoResourceIntTest {
 
     @Mock
@@ -39,7 +39,7 @@ public class ProfileInfoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        String mockProfile[] = {"test"};
+        String mockProfile[] = { "test" };
         JHipsterProperties.Ribbon ribbon = new JHipsterProperties.Ribbon();
         ribbon.setDisplayOnActiveProfiles(mockProfile);
         when(jHipsterProperties.getRibbon()).thenReturn(ribbon);

@@ -1,5 +1,6 @@
 package io.github.robertovillarejo.web.rest;
 
+import io.github.robertovillarejo.config.Constants;
 import io.github.robertovillarejo.service.SocialService;
 
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class SocialController {
     }
 
     @GetMapping("/signup")
-    public RedirectView signUp(WebRequest webRequest, @CookieValue(name = "NG_TRANSLATE_LANG_KEY", required = false, defaultValue = "\"es\"") String langKey) {
+    public RedirectView signUp(WebRequest webRequest, @CookieValue(name = "NG_TRANSLATE_LANG_KEY", required = false, defaultValue = Constants.DEFAULT_LANGUAGE) String langKey) {
         try {
             Connection<?> connection = providerSignInUtils.getConnectionFromSession(webRequest);
             socialService.createSocialUser(connection, langKey.replace("\"", ""));

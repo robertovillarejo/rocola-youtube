@@ -24,7 +24,6 @@ import org.xnio.OptionMap;
 import javax.servlet.*;
 import java.util.*;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -102,6 +101,21 @@ public class WebConfigurerTest {
         if (container.getDocumentRoot() != null) {
             assertThat(container.getDocumentRoot().getPath()).isEqualTo(FilenameUtils.separatorsToSystem("target/www"));
         }
+
+        Builder builder = Undertow.builder();
+        container.getBuilderCustomizers().forEach(c -> c.customize(builder));
+        OptionMap.Builder serverOptions = (OptionMap.Builder) ReflectionTestUtils.getField(builder, "serverOptions");
+        assertThat(serverOptions.getMap().get(UndertowOptions.ENABLE_HTTP2)).isNull();
+    }
+
+    @Test
+    public void testCustomizeServletContainerNotProd() {
+        UndertowEmbeddedServletContainerFactory container = new UndertowEmbeddedServletContainerFactory();
+        webConfigurer.customize(container);
+        assertThat(container.getMimeMappings().get("abs")).isEqualTo("audio/x-mpeg");
+        assertThat(container.getMimeMappings().get("html")).isEqualTo("text/html;charset=utf-8");
+        assertThat(container.getMimeMappings().get("json")).isEqualTo("text/html;charset=utf-8");
+        assertThat(container.getDocumentRoot().getPath()).isEqualTo(FilenameUtils.separatorsToSystem("src/main/webapp"));
 
         Builder builder = Undertow.builder();
         container.getBuilderCustomizers().forEach(c -> c.customize(builder));
@@ -329,5 +343,4 @@ public class WebConfigurerTest {
             return null;
         }
     }
-
 }

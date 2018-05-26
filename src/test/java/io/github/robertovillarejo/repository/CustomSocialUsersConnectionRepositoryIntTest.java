@@ -1,6 +1,6 @@
 package io.github.robertovillarejo.repository;
 
-import io.github.robertovillarejo.RocolaYoutubeApp;
+import io.github.robertovillarejo.RocolayoutubeApp;
 import io.github.robertovillarejo.domain.SocialUserConnection;
 
 import org.junit.Before;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RocolaYoutubeApp.class)
+@SpringBootTest(classes = RocolayoutubeApp.class)
 public class CustomSocialUsersConnectionRepositoryIntTest {
 
     private ConnectionFactoryRegistry connectionFactoryRegistry;
@@ -72,9 +72,7 @@ public class CustomSocialUsersConnectionRepositoryIntTest {
         insertFacebookConnection();
         insertFacebookConnectionSameFacebookUser();
         List<String> localUserIds = usersConnectionRepository.findUserIdsWithConnection(connectionRepository.getPrimaryConnection(TestFacebookApi.class));
-        assertEquals(2, localUserIds.size());
-        assertEquals("1", localUserIds.get(0));
-        assertEquals("2", localUserIds.get(1));
+        assertThat(localUserIds).containsExactly("1", "2");
     }
 
     @Test

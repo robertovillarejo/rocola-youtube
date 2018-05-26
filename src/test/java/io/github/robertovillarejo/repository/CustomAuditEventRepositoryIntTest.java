@@ -1,6 +1,6 @@
 package io.github.robertovillarejo.repository;
 
-import io.github.robertovillarejo.RocolaYoutubeApp;
+import io.github.robertovillarejo.RocolayoutubeApp;
 import io.github.robertovillarejo.config.Constants;
 import io.github.robertovillarejo.config.audit.AuditEventConverter;
 import io.github.robertovillarejo.domain.PersistentAuditEvent;
@@ -23,14 +23,15 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static io.github.robertovillarejo.repository.CustomAuditEventRepository.EVENT_DATA_COLUMN_MAX_LENGTH;
 
 /**
- * Test class for the CustomAuditEventRepository customAuditEventRepository class.
+ * Test class for the CustomAuditEventRepository class.
  *
  * @see CustomAuditEventRepository
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RocolaYoutubeApp.class)
+@SpringBootTest(classes = RocolayoutubeApp.class)
 public class CustomAuditEventRepositoryIntTest {
 
     @Autowired
@@ -164,6 +165,28 @@ public class CustomAuditEventRepositoryIntTest {
         assertThat(persistentAuditEvent.getAuditEventType()).isEqualTo(event.getType());
         assertThat(persistentAuditEvent.getData()).containsKey("test-key");
         assertThat(persistentAuditEvent.getData().get("test-key")).isEqualTo("test-value");
+        assertThat(persistentAuditEvent.getAuditEventDate()).isEqualTo(event.getTimestamp().toInstant());
+    }
+
+    @Test
+    public void addAuditEventTruncateLargeData() {
+        Map<String, Object> data = new HashMap<>();
+        StringBuilder largeData = new StringBuilder();
+        for (int i = 0; i < EVENT_DATA_COLUMN_MAX_LENGTH + 10; i++) {
+            largeData.append("a");
+        }
+        data.put("test-key", largeData);
+        AuditEvent event = new AuditEvent("test-user", "test-type", data);
+        customAuditEventRepository.add(event);
+        List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
+        assertThat(persistentAuditEvents).hasSize(1);
+        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.get(0);
+        assertThat(persistentAuditEvent.getPrincipal()).isEqualTo(event.getPrincipal());
+        assertThat(persistentAuditEvent.getAuditEventType()).isEqualTo(event.getType());
+        assertThat(persistentAuditEvent.getData()).containsKey("test-key");
+        String actualData = persistentAuditEvent.getData().get("test-key");
+        assertThat(actualData.length()).isEqualTo(EVENT_DATA_COLUMN_MAX_LENGTH);
+        assertThat(actualData).isSubstringOf(largeData);
         assertThat(persistentAuditEvent.getAuditEventDate()).isEqualTo(event.getTimestamp().toInstant());
     }
 

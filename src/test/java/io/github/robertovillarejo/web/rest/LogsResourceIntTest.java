@@ -1,6 +1,6 @@
 package io.github.robertovillarejo.web.rest;
 
-import io.github.robertovillarejo.RocolaYoutubeApp;
+import io.github.robertovillarejo.RocolayoutubeApp;
 import io.github.robertovillarejo.web.rest.vm.LoggerVM;
 import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.LoggerContext;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LogsResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RocolaYoutubeApp.class)
+@SpringBootTest(classes = RocolayoutubeApp.class)
 public class LogsResourceIntTest {
 
     private MockMvc restLogsMockMvc;

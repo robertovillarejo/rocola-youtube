@@ -1,6 +1,6 @@
 package io.github.robertovillarejo.web.rest;
 
-import io.github.robertovillarejo.RocolaYoutubeApp;
+import io.github.robertovillarejo.RocolayoutubeApp;
 import io.github.robertovillarejo.config.audit.AuditEventConverter;
 import io.github.robertovillarejo.domain.PersistentAuditEvent;
 import io.github.robertovillarejo.repository.PersistenceAuditEventRepository;
@@ -32,13 +32,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see AuditResource
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = RocolaYoutubeApp.class)
+@SpringBootTest(classes = RocolayoutubeApp.class)
 public class AuditResourceIntTest {
 
     private static final String SAMPLE_PRINCIPAL = "SAMPLE_PRINCIPAL";
     private static final String SAMPLE_TYPE = "SAMPLE_TYPE";
     private static final Instant SAMPLE_TIMESTAMP = Instant.parse("2015-08-04T10:11:30Z");
-    private static final long SECONDS_PER_DAY = 60*60*24;
+    private static final long SECONDS_PER_DAY = 60 * 60 * 24;
 
     @Autowired
     private PersistenceAuditEventRepository auditEventRepository;
