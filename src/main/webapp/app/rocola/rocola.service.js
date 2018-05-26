@@ -20,6 +20,7 @@
             disconnect: disconnect,
             receive: receive,
             addVideo: addVideo,
+            removeVideo, removeVideo,
             subscribe: subscribe,
             unsubscribe: unsubscribe
         };
@@ -41,12 +42,14 @@
             stompClient.connect(headers, function () {
                 connected.resolve('success');
                 addVideo({
-                    title: 'Automatic'
+                    title: 'Automatic',
+                    url: 'o6y-nTebriQ'
                 });
                 if (!alreadyConnectedOnce) {
                     stateChangeStart = $rootScope.$on('$stateChangeStart', function () {
                         addVideo({
-                            title: 'Automatic'
+                            title: 'Automatic',
+                            url: 'o6y-nTebriQ'
                         });
                     });
                     alreadyConnectedOnce = true;
@@ -71,10 +74,18 @@
         }
 
         function addVideo(video) {
-            console.log('Add Video');
             if (stompClient !== null && stompClient.connected) {
                 stompClient
                     .send('/topic/video',
+                        {},
+                        angular.toJson(video));
+            }
+        }
+
+        function removeVideo(video) {
+            if (stompClient !== null && stompClient.connected) {
+                stompClient
+                    .send('/topic/video/remove',
                         {},
                         angular.toJson(video));
             }

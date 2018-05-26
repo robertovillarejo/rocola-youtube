@@ -21,10 +21,10 @@ public class RocolaService implements ApplicationListener<SessionConnectedEvent>
     private static final Logger log = LoggerFactory.getLogger(RocolaService.class);
 
     private VideoService videoService;
-    
+
     private final SimpMessageSendingOperations messagingTemplate;
 
-    public RocolaService(VideoService videoService,SimpMessageSendingOperations messagingTemplate) {
+    public RocolaService(VideoService videoService, SimpMessageSendingOperations messagingTemplate) {
         this.videoService = videoService;
         this.messagingTemplate = messagingTemplate;
     }
@@ -35,6 +35,11 @@ public class RocolaService implements ApplicationListener<SessionConnectedEvent>
         videoService.save(video);
         log.debug("Saving video {}", video);
         return videoService.findAll();
+    }
+
+    @SubscribeMapping("/topic/video/remove")
+    public void removeVideo(@Payload Video video) {
+        videoService.delete(video.getId());
     }
 
     @Override

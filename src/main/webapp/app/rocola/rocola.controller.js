@@ -5,14 +5,14 @@
         .module('rocolayoutubeApp')
         .controller('RocolaController', RocolaController);
 
-    RocolaController.$inject = ['$cookies', '$http', 'RocolaService', 'YouTubeService', '$window'];
+    RocolaController.$inject = ['$cookies', '$http', 'RocolaService', 'YouTubeService', '$window', '$scope'];
 
-    function RocolaController($cookies, $http, RocolaService, YouTubeService, $window) {
+    function RocolaController($cookies, $http, RocolaService, YouTubeService, $window, $scope) {
 
         RocolaService.connect();
 
         var vm = this;
-
+        vm.state;
         vm.playlist = [];
         vm.results = [];
         vm.search = searchVideos;
@@ -25,19 +25,18 @@
         }
 
         function addVideo(video) {
-            RocolaService.addVideo({
-                title: video.snippet.title,
-                description: video.snippet.description,
-                url: video.id.videoId
-            });
-            if (vm.playlist.length === 0 && vm.player.getPlayerState() !== 1) {
-                vm.player.cueVideoById(video.id.videoId);
-                return;
-            }
+            vm.state.addVideo(video);
         }
 
         RocolaService.receive().then(null, null, function (playlist) {
             vm.playlist = playlist;
+            if (vm.playlist.length > 0) {
+                vm.state = notEmptyPlaylist;
+                console.log('state not empty');
+            } else {
+                vm.state = emptyPlaylist;
+                console.log('state empty');
+            }
         });
 
         $window.onYouTubeIframeAPIReady = function () {
@@ -62,36 +61,59 @@
         };
 
         function onPlayerReady(event) {
-            if (vm.playlist.length > 0) {
-                vm.playNextVideo();
-            } else {
-                // Hacer invisible al reproductor
+            vm.state.playNextVideo();
+        }
+
+        function onPlayerStateChange(event) {
+            vm.PlayerState = event.data;
+            switch (event.data) {
+                case YT.PlayerState.ENDED:
+                    vm.state.playNextVideo();
+                    break;
+
+                case 5:
+                    console.log('Play VIDEO');
+                    vm.player.playVideo();
+                    break;
             }
         }
 
-        vm.playNextVideo = function () {
-            var nextVideo = vm.playlist.shift();
-            vm.player.cueVideoById(vm.playlist[0].url);
-            vm.player.playVideo();
+        function saveVideo(video) {
+            RocolaService.addVideo({
+                title: video.snippet.title,
+                description: video.snippet.description,
+                url: video.id.videoId
+            });
         }
 
-        $window.onStateChange = function () {
-            console.log('On state change');
+        var emptyPlaylist = {
+            addVideo: function (video) {
+                saveVideo(video);
+                vm.playlist.push(video);
+                if (vm.player.getPlayerState() !== YT.PlayerState.ENDED) {
+                    vm.player.cueVideoById(video.id.videoId);
+                }
+                vm.state = notEmptyPlaylist;
+                console.log('state not emtpy');
+            },
+            playNextVideo: function () {
+                return;
+            }
         }
 
-        function onPlayerStateChange (event) {
-            vm.PlayerState = event.data;
-            if (event.data === YT.PlayerState.ENDED) {
-                if (vm.playlist.length > 0) {
-                    vm.playNextVideo();
-                } else {
-                    // Hacer invisible al reproductor
+        var notEmptyPlaylist = {
+            addVideo: function (video) {
+                saveVideo(video);
+                vm.playlist.push(video);
+            },
+            playNextVideo: function () {
+                $scope.$apply(function () {
+                    vm.player.cueVideoById(vm.playlist.shift().url);
+                });
+                if (vm.playlist.length === 0) {
+                    vm.state = emptyPlaylist;
                 }
             }
-            if (vm.player.getPlayerState() === 5 && vm.playlist.length === 0) {
-                vm.player.playVideo();
-            }
         }
-
     }
 })();
