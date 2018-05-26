@@ -52,6 +52,11 @@ public class WebsocketConfiguration extends AbstractWebSocketMessageBrokerConfig
             .setAllowedOrigins(allowedOrigins)
             .withSockJS()
             .setInterceptors(httpSessionHandshakeInterceptor());
+        registry.addEndpoint("/websocket/rocola")
+        .setHandshakeHandler(defaultHandshakeHandler())
+        .setAllowedOrigins(allowedOrigins)
+        .withSockJS()
+        .setInterceptors(httpSessionHandshakeInterceptor());
     }
 
     @Bean

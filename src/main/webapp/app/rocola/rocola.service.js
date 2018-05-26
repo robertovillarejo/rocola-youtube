@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     /* globals SockJS, Stomp */
 
@@ -6,9 +6,9 @@
         .module('rocolayoutubeApp')
         .factory('RocolaService', RocolaService);
 
-        RocolaService.$inject = ['$rootScope', '$window', '$cookies', '$http', '$q', 'AuthServerProvider'];
+    RocolaService.$inject = ['$rootScope', '$window', '$cookies', '$http', '$q', 'AuthServerProvider'];
 
-    function RocolaService ($rootScope, $window, $cookies, $http, $q, AuthServerProvider) {
+    function RocolaService($rootScope, $window, $cookies, $http, $q, AuthServerProvider) {
         var stompClient = null;
         var subscriber = null;
         var listener = $q.defer();
@@ -26,72 +26,68 @@
 
         return service;
 
-        function connect () {
+        function connect() {
             //building absolute path so that websocket doesn't fail when deploying with a context path
             var loc = $window.location;
-            var url = '//' + loc.host + loc.pathname + 'websocket/tracker';
+            var url = '//' + loc.host + loc.pathname + 'websocket/rocola';
             var authToken = AuthServerProvider.getToken();
-            if(authToken){
+            if (authToken) {
                 url += '?access_token=' + authToken;
             }
             var socket = new SockJS(url);
             stompClient = Stomp.over(socket);
             var stateChangeStart;
             var headers = {};
-            stompClient.connect(headers, function() {
+            stompClient.connect(headers, function () {
                 connected.resolve('success');
-                addVideo();
+                //addVideo();
                 if (!alreadyConnectedOnce) {
                     stateChangeStart = $rootScope.$on('$stateChangeStart', function () {
-                        addVideo();
+                        //addVideo();
                     });
                     alreadyConnectedOnce = true;
                 }
             });
             $rootScope.$on('$destroy', function () {
-                if(angular.isDefined(stateChangeStart) && stateChangeStart !== null){
+                if (angular.isDefined(stateChangeStart) && stateChangeStart !== null) {
                     stateChangeStart();
                 }
             });
         }
 
-        function disconnect () {
+        function disconnect() {
             if (stompClient !== null) {
                 stompClient.disconnect();
                 stompClient = null;
             }
         }
 
-        function receive () {
+        function receive() {
             return listener.promise;
         }
 
         function addVideo(video) {
-            console.log(video);
-            console.log(stompClient);
             if (stompClient !== null && stompClient.connected) {
                 stompClient
-                    .send('/topic/playlist',
-                    {},
-                    video);
+                    .send('/topic/video',
+                        {},
+                        angular.toJson(video));
             }
         }
 
-        function subscribe () {
-            connected.promise.then(function() {
-                subscriber = stompClient.subscribe('/topic/playlist', function(data) {
+        function subscribe() {
+            connected.promise.then(function () {
+                subscriber = stompClient.subscribe('/topic/playlist', function (data) {
                     listener.notify(angular.fromJson(data.body));
                 });
             }, null, null);
         }
 
-        function unsubscribe () {
+        function unsubscribe() {
             if (subscriber !== null) {
                 subscriber.unsubscribe();
             }
             listener = $q.defer();
         }
-
-        service.connect();
     }
 })();

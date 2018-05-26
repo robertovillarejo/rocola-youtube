@@ -9,6 +9,8 @@
 
     function RocolaController($cookies, $http, RocolaService, YouTubeService) {
 
+        RocolaService.connect();
+
         var vm = this;
 
         vm.playlist = [];
@@ -17,7 +19,7 @@
         vm.addVideo = addVideo;
 
         function searchVideos(query) {
-            YouTubeService.search().then(response => {
+            YouTubeService.search().then(function (response) {
                 vm.results = response.data.items;
             });
         }
@@ -31,13 +33,8 @@
         }
 
         RocolaService.receive().then(null, null, function (playlist) {
-            showPlaylist(playlist);
-            console.log(playlist);
-            console.log('Servicio listo');
+            vm.playlist = playlist;
         });
-
-        function showPlaylist(playlist) {
-        }
 
     }
 })();

@@ -12,7 +12,7 @@
             parent: 'app',
             url: '/rocola',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_USER'],
                 pageTitle: 'rocola.title'
             },
             views: {
