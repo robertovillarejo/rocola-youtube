@@ -1,0 +1,45 @@
+<header>
+    <h1>Rocola
+        <strong>YouTube</strong>
+    </h1>
+    <form id="search" ng-submit="vm.search(query)">
+        <input id="query" name="q" type="text" placeholder="Search for a YouTube video" ng-model="query">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</header>
+
+<!-- Results list -->
+<div id="results">
+    <div class="video" ng-repeat="video in vm.results" ng-click="vm.addVideo(video)">
+        <img class="video-image" ng-src="{{ video.snippet.thumbnails.default.url }}">
+        <p class="video-title">{{ video.snippet.title }}</p>
+        <p class="video-author">{{ video.snippet.channelTitle }}</p>
+        <p class="video-description">{{ video.snippet.description }}</p>
+    </div>
+</div>
+
+<div>
+    <h2>Playlist</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Url</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="video in vm.playlist">
+                    <td>{{video.id}}</td>
+                    <td>{{video.title}}</td>
+                    <td>{{video.description}}</td>
+                    <td>{{video.url}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
