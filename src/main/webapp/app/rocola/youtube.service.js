@@ -17,7 +17,7 @@
         function search(query) {
             return $http.get('https://www.googleapis.com/youtube/v3/search', {
                 params: {
-                    key: 'AIzaSyD8839x5fpTHddEocyJZKsbUihKT_S5QeA',
+                    key: 'AIzaSyB-kfUTllY47Aq2amoLel2E-ul7udCB69E',
                     part: 'snippet',
                     q: query,
                     maxResults: 30,

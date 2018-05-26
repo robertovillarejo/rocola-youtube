@@ -40,10 +40,14 @@
             var headers = {};
             stompClient.connect(headers, function () {
                 connected.resolve('success');
-                //addVideo();
+                addVideo({
+                    title: 'Automatic'
+                });
                 if (!alreadyConnectedOnce) {
                     stateChangeStart = $rootScope.$on('$stateChangeStart', function () {
-                        //addVideo();
+                        addVideo({
+                            title: 'Automatic'
+                        });
                     });
                     alreadyConnectedOnce = true;
                 }
@@ -67,6 +71,7 @@
         }
 
         function addVideo(video) {
+            console.log('Add Video');
             if (stompClient !== null && stompClient.connected) {
                 stompClient
                     .send('/topic/video',
