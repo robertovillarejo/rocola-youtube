@@ -4,29 +4,23 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
 
 import io.github.robertovillarejo.domain.Video;
 import io.github.robertovillarejo.service.VideoService;
 
 @Controller
-public class RocolaService implements ApplicationListener<SessionConnectedEvent> {
+public class RocolaService {
 
     private static final Logger log = LoggerFactory.getLogger(RocolaService.class);
 
     private VideoService videoService;
 
-    private final SimpMessageSendingOperations messagingTemplate;
-
-    public RocolaService(VideoService videoService, SimpMessageSendingOperations messagingTemplate) {
+    public RocolaService(VideoService videoService) {
         this.videoService = videoService;
-        this.messagingTemplate = messagingTemplate;
     }
 
     @SubscribeMapping("/topic/video")
@@ -40,11 +34,6 @@ public class RocolaService implements ApplicationListener<SessionConnectedEvent>
     @SubscribeMapping("/topic/video/remove")
     public void removeVideo(@Payload Video video) {
         videoService.delete(video.getId());
-    }
-
-    @Override
-    public void onApplicationEvent(SessionConnectedEvent event) {
-        messagingTemplate.convertAndSend("/topic/playlist", videoService.findAll());
     }
 
 }
