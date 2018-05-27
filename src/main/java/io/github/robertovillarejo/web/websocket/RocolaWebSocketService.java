@@ -13,13 +13,13 @@ import io.github.robertovillarejo.domain.Video;
 import io.github.robertovillarejo.service.VideoService;
 
 @Controller
-public class RocolaService {
+public class RocolaWebSocketService {
 
-    private static final Logger log = LoggerFactory.getLogger(RocolaService.class);
+    private static final Logger log = LoggerFactory.getLogger(RocolaWebSocketService.class);
 
     private VideoService videoService;
 
-    public RocolaService(VideoService videoService) {
+    public RocolaWebSocketService(VideoService videoService) {
         this.videoService = videoService;
     }
 

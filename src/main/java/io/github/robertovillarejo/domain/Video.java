@@ -2,6 +2,7 @@ package io.github.robertovillarejo.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -27,7 +28,11 @@ public class Video implements Serializable {
     @Field("url")
     private String url;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    @DBRef
+    private User user;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not
+    // remove
     public String getId() {
         return id;
     }
@@ -74,7 +79,16 @@ public class Video implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here, do not remove
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -98,11 +112,8 @@ public class Video implements Serializable {
 
     @Override
     public String toString() {
-        return "Video{" +
-            "id=" + getId() +
-            ", title='" + getTitle() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", url='" + getUrl() + "'" +
-            "}";
+        return "Video{" + "id=" + getId() + ", title='" + getTitle() + "'" + ", description='" + getDescription() + "'"
+                + ", url='" + getUrl() + "'" + "}";
     }
+
 }
